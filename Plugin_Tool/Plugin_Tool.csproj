@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- 原 netstandard1.4 不支持 Assembly.Load(byte[])，且无法被 net461 的 WinForms 项目正常引用，统一改为 net461 -->
+    <TargetFramework>net461</TargetFramework>
+    <RootNamespace>Plugin_Tool</RootNamespace>
+    <AssemblyName>Plugin_Tool</AssemblyName>
+  </PropertyGroup>
+
+</Project>

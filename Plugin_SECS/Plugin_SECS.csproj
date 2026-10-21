@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B4308E6F-AC3D-43C3-A3DD-10E91E62EE8E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Plugin_SECS</RootNamespace>
+    <AssemblyName>Plugin_SECS</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <!-- 输出到宿主 Main 的插件目录，供 PluginManager 反射扫描 -->
+    <OutputPath>..\Main\bin\Debug\Plugins\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>0</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Main\bin\Release\Plugins\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- 所有 NuGet 引用显式 Private=False：依赖 DLL 不复制进插件输出目录（Main\bin\Debug\Plugins\），
+         插件目录只保留插件本体。运行时依赖由 AfterBuild 目标统一复制到宿主根目录（AppDomain.BaseDirectory）。 -->
+    <Reference Include="CommunityToolkit.HighPerformance, Version=8.2.0.0, Culture=neutral, PublicKeyToken=4aff67a105548ee2, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommunityToolkit.HighPerformance.8.2.2\lib\netstandard2.0\CommunityToolkit.HighPerformance.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.8.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.8.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.8.0.0\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.ConfigurationExtensions.8.0.0\lib\netstandard2.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.8.0.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PooledAwait, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c4b4c52b6e08f4a0, processorArchitecture=MSIL">
+      <HintPath>..\packages\PooledAwait.1.0.49\lib\net461\PooledAwait.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Secs4Net, Version=2.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Secs4Net.2.4.3\lib\netstandard2.0\Secs4Net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Secs4Net.Sml, Version=2.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Secs4Net.Sml.2.4.3\lib\netstandard2.0\Secs4Net.Sml.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Pipelines, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.8.0.0\lib\netstandard2.0\System.IO.Pipelines.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Threading.Channels, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Channels.8.0.0\lib\netstandard2.0\System.Threading.Channels.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Ref\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- ========== 插件入口 ========== -->
+    <Compile Include="Plugin\SecsCommunicationPlugin.cs" />
+    <!-- ========== 配置模型 ========== -->
+    <Compile Include="Core\SecsPluginConfig.cs" />
+    <!-- ========== GEM 设备模拟 ========== -->
+    <Compile Include="Core\EquipmentSimulator.cs" />
+    <!-- ========== HSMS 传输服务（Secs4Net 开源库封装） ========== -->
+    <Compile Include="Service\Secs4NetService.cs" />
+    <Compile Include="Plugin\PluginGemLogger.cs" />
+    <!-- ========== SML 编解码 ========== -->
+    <Compile Include="Sml\SmlService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- 插件引用契约层 Plugin.Abstractions：Private=False 表示不复制 Plugin.Abstractions.dll 到插件输出目录，
+         避免宿主与插件各加载一份契约 DLL 造成 ICommunicationPlugin 类型标识冲突 -->
+    <ProjectReference Include="..\Plugin.Abstractions\Abstractions.csproj">
+      <Project>{dcd727ee-f1e3-4dc3-ba12-b60ce90ce151}</Project>
+      <Name>Abstractions</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <!-- =====================================================================
+       插件运行时依赖统一复制到宿主根目录（AppDomain.BaseDirectory = Main\bin\Debug\）。
+       PluginManager 直接 LoadFrom Plugins 源目录（2026-09-02 起不再使用 Shadow 副本），
+       CLR 对 LoadFrom 加载的程序集的依赖解析会回落到宿主基目录；因此依赖放根目录即可被解析，
+       Plugins 目录保持只放插件本体（依赖 DLL 不复制进 Plugins）。
+       System.* 与宿主已提供的程序集（App 依赖传递）不在此清单中，避免覆盖宿主版本。
+       ===================================================================== -->
+  <Target Name="CopySecsRuntimeDepsToHostBin" AfterTargets="Build">
+    <ItemGroup>
+      <_SecsRuntimeDeps Include="..\packages\CommunityToolkit.HighPerformance.8.2.2\lib\netstandard2.0\CommunityToolkit.HighPerformance.dll" />
+      <_SecsRuntimeDeps Include="..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll" />
+      <_SecsRuntimeDeps Include="..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll" />
+      <_SecsRuntimeDeps Include="..\packages\Microsoft.Extensions.Configuration.Abstractions.8.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll" />
+      <_SecsRuntimeDeps Include="..\packages\Microsoft.Extensions.Configuration.Binder.8.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Binder.dll" />
+      <_SecsRuntimeDeps Include="..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+      <_SecsRuntimeDeps Include="..\packages\Microsoft.Extensions.Options.8.0.0\lib\netstandard2.0\Microsoft.Extensions.Options.dll" />
+      <_SecsRuntimeDeps Include="..\packages\Microsoft.Extensions.Options.ConfigurationExtensions.8.0.0\lib\netstandard2.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll" />
+      <_SecsRuntimeDeps Include="..\packages\Microsoft.Extensions.Primitives.8.0.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll" />
+      <_SecsRuntimeDeps Include="..\packages\PooledAwait.1.0.49\lib\net461\PooledAwait.dll" />
+      <_SecsRuntimeDeps Include="..\packages\Secs4Net.2.4.3\lib\netstandard2.0\Secs4Net.dll" />
+      <_SecsRuntimeDeps Include="..\packages\Secs4Net.Sml.2.4.3\lib\netstandard2.0\Secs4Net.Sml.dll" />
+      <_SecsRuntimeDeps Include="..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll" />
+      <_SecsRuntimeDeps Include="..\packages\System.IO.Pipelines.8.0.0\lib\netstandard2.0\System.IO.Pipelines.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_SecsRuntimeDeps)" DestinationFolder="..\Main\bin\$(Configuration)\" SkipUnchangedFiles="true" />
+  </Target>
+  <!-- =====================================================================
+       构建后清理输出目录（Plugins）中 netstandard2.0 外观程序集（System.*.dll、
+       netstandard.dll、Microsoft.Win32.Primitives.dll 等）。这些是 .NET SDK
+       构建对 netstandard 引用的副产物，并非插件运行时依赖（宿主根目录的
+       netstandard.dll 已提供类型转发），保留会污染插件目录。插件本体
+       （Plugin_*.dll）与契约 Plugin.Abstractions.dll 不受影响。
+       ===================================================================== -->
+  <Target Name="CleanSecsPluginOutputFacades" AfterTargets="Build">
+    <ItemGroup>
+      <_FacadeToRemove Include="$(OutDir)netstandard.dll" />
+      <_FacadeToRemove Include="$(OutDir)Microsoft.Win32.Primitives.dll" />
+      <_FacadeToRemove Include="$(OutDir)System.*.dll" />
+    </ItemGroup>
+    <Delete Files="@(_FacadeToRemove)" />
+  </Target>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

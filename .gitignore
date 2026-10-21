@@ -1,0 +1,77 @@
+# ============================================================
+#  AOITestTool — Main.sln / .NET Framework 4.6.1
+#  说明：这是老式 csproj（非 SDK 风格），Compile 逐文件显式列出，
+#        NuGet 依赖落在解决方案级 packages\ 目录（可 restore）。
+# ============================================================
+
+# ---------------- Visual Studio / IDE ----------------
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.csproj.user
+*.vbproj.user
+*.VC.db
+*.VC.VC.opendb
+*.DotSettings.user
+_ReSharper*/
+*.GhostDoc.xml
+*.Publish.xml
+*.pubxml.user
+*.~vs*
+
+# ---------------- 构建输出 ----------------
+[Bb]in/
+[Oo]bj/
+[Tt]est[Rr]esults/
+*.pdb
+*.cache
+*.tlog
+*.lastbuildstate
+*.tmp_proj
+*.log
+Log/
+Logs/
+UpgradeLog*.XML
+_UpgradeReport_Files/
+
+# 例外：AOITest 的运行配置是手工维护的文件，不是编译产物，
+# 必须进版本库，否则 clone 下来程序没有配置可读。
+# 注意顺序：先整体忽略 bin，再逐层"重新包含"到 Config 目录。
+!AOITest/bin/
+AOITest/bin/*
+!AOITest/bin/Debug/
+AOITest/bin/Debug/*
+!AOITest/bin/Debug/Config/
+
+# ---------------- NuGet ----------------
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.assets.json
+
+# ---------------- 第三方引用（重要，勿忽略） ----------------
+# Ref\ 下是厂商 SDK 二进制（DomainAOI.DataExport / QuickMiddle.MES.SDK /
+# SinicTek.SDK / Aspose.Cells 等），没有 NuGet 来源，必须随仓库提交，
+# 否则任何人 clone 后都无法编译。因此这里不忽略 Ref\*.dll。
+# 只忽略其中的本地备份目录。
+Ref/_backup/
+
+# ---------------- 本地工作数据 / 临时文件 ----------------
+.workbuddy/
+*.bak
+*.backup
+*.orig
+*~
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# ---------------- 本地私有配置（按需启用） ----------------
+# 若现场配置文件含客户账号、密钥或内网地址，取消下面注释，改用
+# config.ini.example / *.config.example 作为模板入库。
+# AOITest/bin/Debug/Config/config.ini
+# AOITest/bin/Debug/Config/*.secret.*
