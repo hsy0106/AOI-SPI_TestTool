@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 public static class DllMethodInvoker
@@ -31,8 +32,7 @@ public static class DllMethodInvoker
             throw new ArgumentException("方法名不能为空。");
 
         // 1. 加载 DLL
-        Assembly assembly = Assembly.LoadFrom(
-            Path.GetFullPath(dllPath));
+        Assembly assembly = Load(dllPath);
 
         // 2. 获取指定类型
         Type type = assembly.GetType(className, false, false);
@@ -125,5 +125,42 @@ public static class DllMethodInvoker
 
             throw;
         }
+    }
+
+
+    private static Assembly Load(string dllPath)
+    {
+        if (string.IsNullOrWhiteSpace(dllPath)) throw new ArgumentNullException(nameof(dllPath));
+        return Assembly.Load(File.ReadAllBytes(Path.GetFullPath(dllPath)));
+    }
+    private static string FirstPart(string s)
+       => string.IsNullOrEmpty(s) ? string.Empty : s.Split('.')[0];
+
+    /// <summary>
+    /// 获取指定的程序集名称
+    /// </summary>
+    /// <param name="dllPath"></param>
+    /// <returns></returns>
+    public static string GetAssemblyNameFirstPart(string dllPath)
+      => FirstPart(Load(dllPath).GetName().Name);
+
+    
+    /// <summary>
+    /// 获取指定类的命名空间（firstPartOnly=true 时只取第一段）
+    /// </summary>
+    public static string GetNamespace(string dllPath, string className, bool firstPartOnly = false)
+    {
+        var asm  = Assembly.LoadFrom(
+            Path.GetFullPath(dllPath));
+
+        var type = asm.GetTypes().FirstOrDefault(t =>
+            t.Name.Equals(className, StringComparison.OrdinalIgnoreCase) ||
+            t.FullName.Equals(className, StringComparison.OrdinalIgnoreCase));
+
+        if (type == null)
+            throw new TypeLoadException($"在 {Path.GetFileName(dllPath)} 中找不到类型：{className}");
+
+        var ns = type.Namespace ?? string.Empty;   // 全局命名空间的类返回 null
+        return firstPartOnly ? FirstPart(ns) : ns;
     }
 }
